@@ -6,9 +6,9 @@
   "license": "MIT",
   "scripts": {
     "cy:open": "cypress open",
-    "test": "cypress run --reporter mochawesome --reporter-options reportDir=cypress/results,json=true,overwrite=false,html=false",
+    "test": "mkdir -p cypress/results && cypress run --reporter mochawesome --reporter-options reportDir=cypress/results,json=true,overwrite=false,html=false",
     "report:merge": "mkdir -p cypress/results && npx mochawesome-merge cypress/results/*.json > cypress/results/report.json || true",
-    "report:generate": "npx marge cypress/results/report.json --reportDir cypress/results"
+    "report:generate": "npx marge cypress/results/report.json --reportDir cypress/results || true"
   },
   "devDependencies": {
     "cypress": "^15.3.0",
