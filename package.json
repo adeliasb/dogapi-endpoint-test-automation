@@ -7,7 +7,7 @@
   "scripts": {
     "cy:open": "cypress open",
     "test": "cypress run --reporter mochawesome --reporter-options reportDir=cypress/results,json=true,overwrite=false,html=false",
-    "report:merge": "mkdir -p cypress/results && npx mochawesome-merge cypress/results/*.json > cypress/results/report.json",
+    "report:merge": "mkdir -p cypress/results && npx mochawesome-merge cypress/results/*.json > cypress/results/report.json || true",
     "report:generate": "npx marge cypress/results/report.json --reportDir cypress/results"
   },
   "devDependencies": {
