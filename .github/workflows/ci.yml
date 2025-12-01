@@ -1,0 +1,50 @@
+name: Cypress API Tests
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  cypress-tests:
+    runs-on: ubuntu-latest
+    steps:
+      # 1. Checkout do código
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2. Configura Node.js
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+
+      # 3. Instala dependências
+      - name: Install dependencies
+        run: npm install
+
+      # 4. Executa os testes do Cypress
+      - name: Run Cypress tests
+        run: npx cypress run --record=false --headless
+        continue-on-error: true # continua mesmo se algum teste falhar
+
+      # 5. Merge dos relatórios Mochawesome
+      - name: Merge Mochawesome reports
+        run: npm run report:merge
+
+      # 6. Gera o HTML do Mochawesome
+      - name: Generate Mochawesome HTML report
+        run: npm run report:generate
+
+      # 7. Upload dos artefatos para evidências
+      - name: Upload Cypress artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: cypress-evidence
+          path: |
+            cypress/reports/report.json
+            cypress/reports/report.html
+            cypress/reports/*.json
+            cypress/screenshots
+            cypress/videos

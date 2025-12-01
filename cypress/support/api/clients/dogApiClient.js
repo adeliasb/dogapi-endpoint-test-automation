@@ -1,4 +1,4 @@
-export const dogApiClient = {
+const dogApiClient = {
   get(path) {
     return cy.request({
       method: "GET",
@@ -7,3 +7,5 @@ export const dogApiClient = {
     });
   },
 };
+
+module.exports = dogApiClient;
