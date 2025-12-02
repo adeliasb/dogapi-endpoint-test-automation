@@ -11,38 +11,42 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. Clonar o repositório
+      # 1. Checkout do código
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      # 2. Configurar Node.js
+      # 2. Configura Node.js
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
           node-version: 20
 
-      # 3. Instalar dependências do projeto
+      # 3. Instala dependências do projeto
       - name: Install dependencies
         run: npm install
 
-      # 4. Criar pasta de resultados
+      # 4. Instala o binário do Cypress
+      - name: Install Cypress binary
+        run: npx cypress install
+
+      # 5. Cria a pasta para resultados
       - name: Create results folder
         run: mkdir -p cypress/results
 
-      # 5. Executar os testes Cypress com Mochawesome
+      # 6. Executa os testes do Cypress
       - name: Run Cypress tests
         run: npm run test
-        continue-on-error: true
+        continue-on-error: true # continua mesmo se algum teste falhar
 
-      # 6. Merge dos arquivos JSON gerados pelo Mochawesome
+      # 7. Merge dos relatórios Mochawesome
       - name: Merge Mochawesome reports
-        run: npm run report:merge
+        run: npm run report:merge || true
 
-      # 7. Gerar HTML do Mochawesome
+      # 8. Gera o HTML do Mochawesome
       - name: Generate Mochawesome HTML report
-        run: npm run report:generate
+        run: npm run report:generate || true
 
-      # 8. Upload das evidências para o GitHub Actions
+      # 9. Upload dos artefatos para evidências
       - name: Upload Cypress artifacts
         uses: actions/upload-artifact@v4
         with:
